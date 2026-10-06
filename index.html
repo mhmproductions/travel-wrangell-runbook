@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Travel Wrangell Site Runbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F7F4EF; --card:#FFFFFF; --soft:#FBF9F5; --codebg:#F0EBE3;
+  --ink:#1D1A15; --body:#3A342B; --muted:#6B6157; --faint:#8C8377;
+  --line:#E2DACE; --line2:#CFC5B6;
+  --rust:#C93D05; --gold:#A98C10; --glacier:#0089A8; --forest:#3E4827;
+  --go:#3C6B34; --gobg:#EAF2E6; --goline:#C3D9B9;
+  --care:#8A6A00; --carebg:#FBF2DA; --careline:#EBDCA8;
+  --stop:#B3200E; --stopbg:#FBE9E5; --stopline:#F0C4B9;
+  --d:"Barlow Condensed",sans-serif; --b:"Barlow",sans-serif; --m:"IBM Plex Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#15120E; --card:#1E1A15; --soft:#191510; --codebg:#110E0A;
+    --ink:#F3EEE6; --body:#D8CFC3; --muted:#A89C8E; --faint:#877C6F;
+    --line:#332A21; --line2:#43382C;
+    --rust:#F26A33; --gold:#D9BB3A; --glacier:#3FBAD8; --forest:#8FA06A;
+    --go:#8CC97C; --gobg:#16230F; --goline:#2E4724;
+    --care:#E8C24E; --carebg:#2B2208; --careline:#544213;
+    --stop:#FF7A63; --stopbg:#2E1410; --stopline:#5C2418;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15120E; --card:#1E1A15; --soft:#191510; --codebg:#110E0A;
+  --ink:#F3EEE6; --body:#D8CFC3; --muted:#A89C8E; --faint:#877C6F;
+  --line:#332A21; --line2:#43382C;
+  --rust:#F26A33; --gold:#D9BB3A; --glacier:#3FBAD8; --forest:#8FA06A;
+  --go:#8CC97C; --gobg:#16230F; --goline:#2E4724;
+  --care:#E8C24E; --carebg:#2B2208; --careline:#544213;
+  --stop:#FF7A63; --stopbg:#2E1410; --stopline:#5C2418;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--b);
+  font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:860px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(1.1rem,4vw,2rem) 5rem;}
+
+h1{font-family:var(--d);font-weight:800;color:var(--ink);margin:0;
+  font-size:clamp(2.2rem,6.5vw,3.5rem);line-height:1;text-transform:uppercase;letter-spacing:.01em;}
+.kick{font-family:var(--m);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rust);margin:0 0 .8rem;}
+.mast{border-bottom:4px solid var(--ink);padding-bottom:1.3rem;margin-bottom:1.6rem;}
+.mast p{margin:1rem 0 0;font-size:1.05rem;color:var(--muted);max-width:60ch;}
+
+h2.sec{font-family:var(--d);font-weight:800;color:var(--ink);
+  font-size:clamp(1.4rem,4vw,2rem);text-transform:uppercase;letter-spacing:.015em;
+  margin:2.6rem 0 1rem;padding-bottom:.5rem;border-bottom:3px solid var(--ink);}
+h2.sec .n{font-family:var(--m);font-size:.68rem;color:var(--rust);letter-spacing:.14em;
+  display:block;margin-bottom:.3rem;font-weight:400;}
+
+/* task cards */
+.task{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:1.15rem 1.3rem;margin-bottom:.8rem;}
+.task-h{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-bottom:.5rem;}
+.task-h h3{font-family:var(--d);font-weight:700;color:var(--ink);margin:0;
+  font-size:1.22rem;text-transform:uppercase;letter-spacing:.015em;line-height:1.1;}
+.lvl{font-family:var(--m);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:20px;white-space:nowrap;}
+.l-go{background:var(--go);color:#fff;}
+.l-care{background:var(--care);color:#fff;}
+.l-stop{background:var(--stop);color:#fff;}
+.task p{margin:.45rem 0;font-size:.97rem;}
+.task p:last-child{margin-bottom:0;}
+.task b{color:var(--ink);}
+.task ol,.task ul{margin:.5rem 0;padding-left:1.3rem;font-size:.97rem;}
+.task li{margin:.28rem 0;}
+.task .why{font-size:.9rem;color:var(--muted);border-left:3px solid var(--line2);
+  padding-left:.8rem;margin-top:.7rem;}
+
+.note{border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:.9rem;border:1px solid;}
+.note h3{font-family:var(--d);font-weight:700;font-size:1.15rem;margin:0 0 .45rem;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--ink);}
+.note p{margin:.45rem 0;font-size:.97rem;} .note p:last-child{margin-bottom:0;}
+.note ul{margin:.5rem 0;padding-left:1.25rem;font-size:.97rem;}
+.n-go{background:var(--gobg);border-color:var(--goline);}
+.n-care{background:var(--carebg);border-color:var(--careline);}
+.n-stop{background:var(--stopbg);border-color:var(--stopline);}
+
+code{font-family:var(--m);font-size:.86em;background:var(--soft);border:1px solid var(--line);
+  padding:.05rem .3rem;border-radius:3px;color:var(--ink);}
+
+/* key legend */
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.7rem;margin-bottom:1.8rem;}
+.lg{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.9rem 1rem;}
+.lg .t{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem;}
+.lg p{margin:0;font-size:.9rem;color:var(--muted);}
+
+/* swatches */
+.sw{display:flex;flex-wrap:wrap;gap:.6rem;margin:.8rem 0;}
+.swatch{border:1px solid var(--line);border-radius:8px;overflow:hidden;width:110px;background:var(--card);}
+.swatch .chip{height:44px;}
+.swatch .lab{padding:.4rem .5rem;font-family:var(--m);font-size:.64rem;color:var(--muted);line-height:1.4;}
+.swatch .lab b{display:block;color:var(--ink);font-family:var(--b);font-size:.78rem;}
+
+/* changelog */
+.log{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+.logrow{display:grid;grid-template-columns:110px 1fr;gap:1rem;padding:.8rem 1.1rem;border-bottom:1px solid var(--line);font-size:.95rem;}
+.logrow:last-child{border-bottom:0;}
+.logrow .dt{font-family:var(--m);font-size:.76rem;color:var(--faint);padding-top:.15rem;}
+.logrow .who{font-family:var(--m);font-size:.7rem;color:var(--rust);text-transform:uppercase;letter-spacing:.08em;}
+@media(max-width:600px){.logrow{grid-template-columns:1fr;gap:.2rem;}}
+
+.foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  font-family:var(--m);font-size:.74rem;color:var(--faint);}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="kick">Travel Wrangell · Living document · Updated Oct 2026</p>
+  <h1>Site Runbook</h1>
+  <p>How to keep travelwrangell.com updated without calling anyone. Written for JR and Kate. Every task is marked with who can safely do it.</p>
+</header>
+
+<div class="legend">
+  <div class="lg"><div class="t"><span class="lvl l-go">Go ahead</span></div>
+    <p>Safe to do anytime. Hard to break anything.</p></div>
+  <div class="lg"><div class="t"><span class="lvl l-care">Careful</span></div>
+    <p>Doable — but follow the steps exactly and check the live site after.</p></div>
+  <div class="lg"><div class="t"><span class="lvl l-stop">Ask Matt</span></div>
+    <p>Don't attempt. Fast for him, risky to guess at.</p></div>
+</div>
+
+<div class="note n-care">
+  <h3>Two habits that prevent most problems</h3>
+  <p><b>1. Always check the live site, not the editor.</b> Save, then open travelwrangell.com in a separate tab. Some things &mdash; forms especially &mdash; look broken while editing and are perfectly fine live.</p>
+  <p><b>2. Log what you changed.</b> Add a line to the changelog at the bottom. When something breaks three weeks later, the log is how we find out what happened.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 01</span>Everyday Content</h2>
+
+<div class="task">
+  <div class="task-h"><h3>Change words on an existing page</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Click into the text and type. Squarespace saves it like a document.</p>
+  <p><b>One rule:</b> don't change the <b>size or style</b> of a heading while you're in there. The big/small text settings control how Google reads the page. Change the words, leave the formatting.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Swap a photo</h3><span class="lvl l-go">Go ahead</span></div>
+  <ol>
+    <li>Click the image, choose the replacement.</li>
+    <li>Fill in the <b>alt text</b> box — one plain sentence describing the photo.</li>
+  </ol>
+  <p class="why">Alt text is what screen readers announce and what Google indexes. Skipping it is the single most common accessibility miss on the site.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Add a blog post</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Blog is <b>More About Wrangell</b>, under Explore More.</p>
+  <ul>
+    <li>Give it <b>one category</b>, picked from the ones that already exist. Categories are how people browse, and a new category with one post in it is a dead end. Don't create new ones.</li>
+    <li>Add a feature image, with alt text.</li>
+  </ul>
+  <p class="why">Aim for something every couple of months. A blog whose newest post is a year old reads as an abandoned site, which is worse than having no blog.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update event dates</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Every event page has a <b>black band right under the photo</b> with When / Where / Cost. That's the first thing visitors look for.</p>
+  <p><b>The rule: never publish an event page without a year in it.</b> "Late July" is useless to someone planning a trip in February.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update what happens at an event</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>The row of small boxes ("Downtown Parade," "Logging Show," "Fireworks") is built for exactly this. Edit the words, add or delete boxes. The layout takes care of itself.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update the Business Directory</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Add, remove or edit listings freely.</p>
+  <p><b>The most valuable thing you can add is hours and whether a business is open in winter.</b> That's the number one question visitors have and the site currently doesn't answer it.</p>
+  <p><b>Paste clean links.</b> Links copied from Airbnb, VRBO or Facebook carry a long tail of tracking code after a <code>?</code>. Delete everything from the <code>?</code> onward. The link still works and it won't break when that code expires.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 02</span>The Homepage</h2>
+
+<div class="note n-care" style="margin-bottom:1rem">
+  <h3>The homepage is a library index, not a brochure</h3>
+  <p>Each entry in <b>The Island Index</b> pairs a plain name with <b>hard facts</b> &mdash; how far, how you get there, what season, what you'll see. Not adjectives.</p>
+  <p><b>Write "30 miles south on the mainland · boat or floatplane · permits July&ndash;August."</b> Not "an unforgettable wildlife experience." Facts are what visitors act on and what AI search can actually use. Adjectives are invisible to both.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update an Island Index entry</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Click the small text under any index name and edit it.</p>
+  <p><b>Keep the format:</b> short facts separated by the dot character. Distance, how to get there, season, what's notable. Aim for 4 facts, not sentences.</p>
+  <p class="why">If a permit window or a season changes, this is the first place to fix it &mdash; it's the most-read text on the site.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Swap a homepage photo</h3><span class="lvl l-go">Go ahead</span></div>
+  <ol>
+    <li>Replace the image.</li>
+    <li><b>Add alt text</b> — one plain sentence describing what's in it.</li>
+    <li><b>Add the photographer credit</b> in the caption field.</li>
+  </ol>
+  <p class="why">Alt text and credits aren't optional extras here — they're part of the deliverable. The photography is doing the emotional work on this site, so the text attached to it is doing the findability work.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Change the featured video</h3><span class="lvl l-care">Careful</span></div>
+  <p>Swap the video, then <b>add the transcript</b>. A video with no transcript is invisible to search and unusable for anyone who can't hear it.</p>
+  <p><b>No transcript, don't publish it.</b> Getting one is a five-minute job with any auto-caption tool.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Change where a homepage button goes</h3><span class="lvl l-care">Careful</span></div>
+  <p>The buttons at the bottom of the homepage &mdash; <b>Plan Your Trip</b> and <b>Plan Your Event</b> &mdash; are the main path from browsing to planning.</p>
+  <ol>
+    <li>Click the button, change the link.</li>
+    <li>Save, open the live homepage, and <b>click the button yourself</b>.</li>
+  </ol>
+  <p class="why">This is worth the extra click. In September the Plan Your Trip button pointed at a page that no longer existed, so the homepage's main button led to an error page. Nothing warns you when that happens.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Reorder or resize Island Index tiles</h3><span class="lvl l-stop">Ask Matt</span></div>
+  <p>The tiles are deliberately different sizes — that's the design, not an accident. Resizing one reflows the whole grid.</p>
+  <p>Changing <b>which</b> entry is the big feature is a reasonable seasonal request. Just ask rather than dragging.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update the Instagram feed</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>Nothing to do — it pulls from @travelwrangell automatically. <b>Post to Instagram and the homepage updates itself.</b></p>
+  <p>The feed comes through a service called <b>Behold</b>, connected to the Instagram account. Nobody needs to touch it day to day.</p>
+  <p><b>One thing worth knowing.</b> If that feed is ever deleted and rebuilt in Behold it gets a new ID, and the block on the website is still looking for the old one. When that happens <b>the Instagram section quietly disappears from the homepage</b> rather than showing an error — that is deliberate, so visitors never see an empty box. But it does mean nobody gets told.</p>
+  <p style="margin-bottom:0">So: <b>if the Instagram section vanishes from the homepage, it is the feed ID.</b> Two-minute fix. Send it over.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>The conditions strip (daylight, tide, river, weather, ferry)</h3><span class="lvl l-go">Go ahead</span></div>
+  <p>The five coloured panels under the homepage hero. <b>Four of them look after themselves</b> — daylight is calculated, and the tide, river and weather pull live from NOAA, the USGS and the National Weather Service every time the page loads. Nobody updates those.</p>
+  <p><b>The one you edit is the ferry.</b> It is plain text inside the block — the line that says something like <i>See schedule · Alaska Marine Highway · Matanuska</i>. Change the words, leave everything else.</p>
+  <p><b>If a panel says “Check” instead of a number</b>, that source is down at the moment. The panel turns into a link to the source so visitors are never stuck. It fixes itself when the source comes back. If one has said “Check” for more than a day, send it over.</p>
+  <p class="why">The station numbers inside the block — 9451204 for the tide, 15024800 for the river — are Wrangell's. Don't change them.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Update “The Year, All at Once”</h3><span class="lvl l-care">Careful</span></div>
+  <p><b>Not on the homepage yet</b> &mdash; skip this until it is. When it goes up:</p>
+  <p>The twelve-month strip. Each month is a short line of text — “Hooligan run. Birdfest Apr 21–25.” — and that text is what you edit, directly inside the Code Block.</p>
+  <ol>
+    <li>Open the Code Block and find the month. Each one starts with its name, like <code>Apr</code>.</li>
+    <li>Change only the words between the tags. Leave the tags themselves.</li>
+    <li>Save, then check the live page, not the editor.</li>
+  </ol>
+  <p><b>Two things you can also change, carefully:</b> the colour of a month's band — the word after <code>data-k=</code>, which is one of <code>water</code>, <code>bears</code>, <code>fest</code> or <code>quiet</code> — and whether a month links somewhere, which is the <code>href=</code> part. Five months already link to their pages.</p>
+  <p class="why">The red “Today” marker and the highlighted month are worked out from the date. They are not something you set, and they are never wrong.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 03</span>Pages &amp; Navigation</h2>
+
+<div class="task">
+  <div class="task-h"><h3>Build a new page</h3><span class="lvl l-care">Careful</span></div>
+  <p><b>Never start from a blank page.</b> Find the page closest to what you want, duplicate it, and replace the content.</p>
+  <ol>
+    <li>Duplicate an existing page.</li>
+    <li>Rename it and set the URL.</li>
+    <li>Replace text and images.</li>
+    <li>Check it on a phone before publishing.</li>
+  </ol>
+  <p class="why">Duplicating carries the styling with it. Starting blank means rebuilding the look by hand, and it never quite matches.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Add a page to the menu</h3><span class="lvl l-care">Careful</span></div>
+  <p>Drag it into the right folder in the Pages panel.</p>
+  <p><b>A folder is not a clickable page.</b> Clicking "Respectful Travel" just opens the dropdown. Whatever sits <b>first inside the folder</b> is what people land on — so never put a new page above the existing first item unless you mean to change the landing page.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Add a form</h3><span class="lvl l-care">Careful</span></div>
+  <p>Separate one-page guide: <a href="adding-a-form.html"><b>Adding a Form to the Website</b></a>. Four steps, no code knowledge needed.</p>
+  <p><b>Three things worth memorizing:</b></p>
+  <ul>
+    <li><b>Only one iDSS form per page.</b> A second one quietly fails.</li>
+    <li><b>Edit a form in iDSS, re-paste it in Squarespace.</b> Editing changes the form's access code; the old paste keeps showing the form but stops collecting responses.</li>
+    <li><b>Keep the wrapper.</b> Every form sits inside one line of code that gives it the Travel Wrangell look &mdash; the guide shows it. Without it the form works but shows up in iDSS's own green and grey.</li>
+  </ul>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Reorder or rename menu sections</h3><span class="lvl l-stop">Ask Matt</span></div>
+  <p>Renaming a section changes its web address. Old links, printed materials and Google results all break unless a redirect is set up at the same time.</p>
+</div>
+
+<div class="task">
+  <div class="task-h"><h3>Delete, merge or retire a page</h3><span class="lvl l-stop">Ask Matt</span></div>
+  <p>Same problem as renaming. When a page goes away, its address has to be pointed somewhere useful <b>at the same moment</b>, or everyone who arrives from Google or an old link gets an error page.</p>
+  <p class="why">This happened during the rebuild: the old Gold Rush and Hiking &amp; Camping pages were removed and their addresses went to error pages until redirects were added. A redirect is a two-minute job. Just ask before the page comes down, not after.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 04</span>Seasonal Rhythm</h2>
+
+<div class="note n-go">
+  <h3>Late winter — before the season</h3>
+  <ul>
+    <li>Confirm and publish all four festival dates for the year</li>
+    <li>Update the cruise ship calendar</li>
+    <li>Check the Business Directory for closures and new businesses</li>
+    <li>Refresh homepage photos to something seasonal</li>
+  </ul>
+</div>
+
+<div class="note n-go">
+  <h3>Fall — after the season</h3>
+  <ul>
+    <li>Remove or archive anything that says "this year"</li>
+    <li>Post a recap or two while it's fresh</li>
+    <li>Note which festival pages got the most traffic, and put next year's effort there</li>
+    <li>Update winter hours in the directory</li>
+  </ul>
+</div>
+
+<div class="note n-care">
+  <h3>Once a year — the link check</h3>
+  <p>Click every link under <b>Partners &amp; Resources</b> and make sure it still goes where it should. Other organizations redesign their sites without telling anyone, and dead links there are especially costly because locals use that section most.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 05</span>Cultural Content</h2>
+
+<div class="note n-stop">
+  <h3>Three standards, no exceptions</h3>
+  <p><b>1. Name them correctly.</b> First mention on any page is <b>Shtax'héen Kwáan Tlingit</b> — with the accents. Copy and paste names from here rather than retyping:</p>
+  <p style="margin:.2rem 0 .7rem;padding-left:1rem;border-left:3px solid var(--line)"><b>Shtax'héen Kwáan</b> &middot; <b>Kiks.ádi</b> (no space after the full stop) &middot; <b>Naanyaa.aayi</b></p>
+  <p class="why" style="margin-top:0">A space that sneaks in after the full stop &mdash; <i>Kiks. ádi</i> &mdash; is often an invisible "non-breaking" space, so find-and-replace won't catch it. If it's wrong, delete the whole word and paste it fresh.</p>
+  <p><b>2. Link the source.</b> Any page with Tlingit content links to the <b>Wrangell Cooperative Association</b> and where relevant <b>SEALASKA</b>.</p>
+  <p><b>3. Present tense.</b> Tlingit culture in Wrangell is living and active — not historical. Write it that way.</p>
+  <p style="margin-top:.7rem"><b>Do not paraphrase, summarize or invent cultural content.</b> If new cultural copy is needed, it comes from WCA. This is the one area where a well-meaning edit can do real damage.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 06</span>Writing in Wrangell's Voice</h2>
+
+<div class="note n-go">
+  <h3>The test</h3>
+  <p>Read it out loud. <b>If it could describe Sitka or Petersburg with a find-and-replace, rewrite it.</b></p>
+  <p><b>More of this:</b> "This is a working waterfront, so you'll see plenty of people doing exactly that—working." · "Moss covers just about anything that stands still long enough." · "There's also a Bearfest Race. And a Salmon Toss. It's exactly what it sounds like."</p>
+  <p><b>Less of this:</b> breathtaking · nestled · gateway to · unforgettable · hidden gem · once-in-a-lifetime · pristine · majestic · at your own pace · something for everyone</p>
+  <p><b>And drop the last paragraph.</b> Most pages end with a summary that repeats what was just said. Cutting it almost always improves the page.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 07</span>Brand Quick Reference</h2>
+
+<div class="sw">
+  <div class="swatch"><div class="chip" style="background:#DC4405"></div><div class="lab"><b>Rust</b>#DC4405</div></div>
+  <div class="swatch"><div class="chip" style="background:#CFB023"></div><div class="lab"><b>Gold</b>#CFB023</div></div>
+  <div class="swatch"><div class="chip" style="background:#00AFD7"></div><div class="lab"><b>Glacier</b>#00AFD7</div></div>
+  <div class="swatch"><div class="chip" style="background:#3E4827"></div><div class="lab"><b>Forest</b>#3E4827</div></div>
+  <div class="swatch"><div class="chip" style="background:#D9D9D6"></div><div class="lab"><b>Snow</b>#D9D9D6</div></div>
+</div>
+<div class="task">
+  <p style="margin-top:0"><b>Type is automatic.</b> Interstate Condensed is built into the site — don't pick fonts from the dropdown. If text looks wrong, it's a settings problem, not a font problem. Send it over.</p>
+  <p><b>Footers are colored on purpose.</b> Each page's footer matches that page. Duplicating a page carries it across correctly.</p>
+</div>
+
+<h2 class="sec"><span class="n">Section 08</span>Don't Touch</h2>
+
+<div class="note n-stop">
+  <h3>These break the whole site, not just one page</h3>
+  <ul>
+    <li><b>Custom CSS panel</b> (Website Tools → Custom CSS) — every page's styling lives in one file here. One stray character and the whole site loses its formatting.</li>
+    <li><b>Code Injection</b> — analytics and tracking. Editing it breaks reporting silently.</li>
+    <li><b>The Community Hotline form fields</b> — the Concern Type and Location dropdowns feed the reports that go to CBW administration. Changing the options breaks the reporting.</li>
+    <li><b>The station numbers inside the conditions strip</b> — 9451204 and 15024800 are Wrangell's tide station and river gauge. Change them and the panels show somewhere else's water.</li>
+    <li><b>Page URLs on live pages</b> — changing one breaks every existing link to it.</li>
+    <li><b>Anything you don't recognize.</b> Nothing here is urgent enough to guess at.</li>
+  </ul>
+</div>
+
+<h2 class="sec"><span class="n">Section 09</span>Changelog</h2>
+
+<div class="note n-go" style="margin-bottom:1rem">
+  <h3>Add a line whenever you change something</h3>
+  <p>Date · who · what. Ten seconds now saves an hour later when something behaves oddly and nobody remembers what moved.</p>
+</div>
+
+<div class="log">
+  <div class="logrow"><div class="dt">Aug 2026<div class="who">MHM</div></div>
+    <div><b>Top 5 Reasons to Visit</b> built and published under Things To Do.</div></div>
+  <div class="logrow"><div class="dt">Aug 2026<div class="who">MHM</div></div>
+    <div><b>Navigation restructure begun</b> — Great Outdoors added; TBMPs renamed to Respectful Travel.</div></div>
+  <div class="logrow"><div class="dt">Aug 2026<div class="who">MHM</div></div>
+    <div><b>iDSS travel guide form</b> added, with site-wide form styling.</div></div>
+  <div class="logrow"><div class="dt">Aug 2026<div class="who">MHM</div></div>
+    <div><b>Homepage rebuilt</b> as The Island Index — added the missing "what and where" paragraph, replaced the tile grid with a facts-based index, added the itinerary section.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Instagram feed live.</b> The old Juicer plugin is replaced by a branded feed pulling from @travelwrangell through Behold. No watermark, no monthly view cap.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Contact form styling rewritten.</b> The iDSS form skin was rebuilt against the live form — fixed fields overflowing their box, the required asterisk taking its own line, and the green submit button.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Wildlife rebuilt</b> as a hub routing to Anan, the Stikine and Birdfest, with a season-by-season section and the birds section the old page promised and never had.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Sport Fishing rebuilt.</b> Structure is in place; still waiting on the fishing licence links, run timing by species, and the charter operator list.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>History and Gold Rush merged</b> into one page of seven eras. <b>Two sections are held pending Wrangell Cooperative Association review and must not be published until they come back.</b></div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Hiking and Camping &amp; Cabins split apart.</b> Hiking absorbs the old Mt. Dewey and Rainbow Falls pages, which were live but sat in no menu.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Conditions strip added to the homepage.</b> Live tide, river level and weather, plus daylight hours. Only the ferry line is edited by hand.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>“The Year, All at Once” built</b> &mdash; twelve months of what happens when, with a marker that follows the date. Ready to place; not on the homepage yet.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Redirects set.</b> Mt. Dewey and Rainbow Falls now land on their sections of the Hiking page, Gold Rush on Wrangell History, Hiking &amp; Camping on Hiking. Old folder addresses redirect too. Checked live Sept 19.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Conditions strip fixed</b> &mdash; the large white gap under it is gone. The editor measured it narrower than the live page and reserved room for two rows.</div></div>
+  <div class="logrow"><div class="dt">Sept 2026<div class="who">MHM</div></div>
+    <div><b>Glaciers, Petroglyph Beach and Totem Park rebuilt</b> in the same format as the other attraction pages. Petroglyph Beach now carries the tide and care guidance from Respectful Travel.</div></div>
+  <div class="logrow"><div class="dt">Oct 2026<div class="who">MHM</div></div>
+    <div><b>Golf, Garnet Ledge, Chief Shakes Tribal House, Getting Around, Getting To Wrangell and the Sample Itinerary rebuilt.</b> Getting Around no longer lists Alaska Seaplanes flights to Sitka, which don't exist.</div></div>
+  <div class="logrow"><div class="dt">Oct 2026<div class="who">MHM</div></div>
+    <div><b>Homepage Plan Your Trip button fixed</b> &mdash; it had pointed at a page that no longer existed.</div></div>
+  <div class="logrow"><div class="dt">Oct 2026<div class="who">MHM</div></div>
+    <div><b>Travel guide request form styled</b> to match the contact form.</div></div>
+  <div class="logrow"><div class="dt">&mdash;</div>
+    <div style="color:var(--faint)">Next entry goes here.</div></div>
+</div>
+
+<div class="foot">MHM Productions · Travel Wrangell Site Runbook · Living document — ask Matt to add a procedure any time one is missing</div>
+
+</div>
+</body>
+</html>

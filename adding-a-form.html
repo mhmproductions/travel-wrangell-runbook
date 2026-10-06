@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Adding a Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F7F4EF; --card:#FFFFFF; --soft:#FBF9F5; --codebg:#F0EBE3;
+  --ink:#1D1A15; --body:#3A342B; --muted:#6B6157; --faint:#8C8377;
+  --line:#E2DACE; --line2:#CFC5B6;
+  --rust:#C93D05; --green:#3C6B34; --greenbg:#EAF2E6; --greenline:#C3D9B9;
+  --redbg:#FBE9E5; --redline:#F0C4B9; --red:#B3200E;
+  --amber:#8A6A00; --amberbg:#FBF2DA; --amberline:#EBDCA8;
+  --d:"Barlow Condensed",sans-serif; --b:"Barlow",sans-serif; --m:"IBM Plex Mono",monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#15120E; --card:#1E1A15; --soft:#191510; --codebg:#110E0A;
+    --ink:#F3EEE6; --body:#D8CFC3; --muted:#A89C8E; --faint:#877C6F;
+    --line:#332A21; --line2:#43382C;
+    --rust:#F26A33; --green:#8CC97C; --greenbg:#16230F; --greenline:#2E4724;
+    --redbg:#2E1410; --redline:#5C2418; --red:#FF7A63;
+    --amber:#E8C24E; --amberbg:#2B2208; --amberline:#544213;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#15120E; --card:#1E1A15; --soft:#191510; --codebg:#110E0A;
+  --ink:#F3EEE6; --body:#D8CFC3; --muted:#A89C8E; --faint:#877C6F;
+  --line:#332A21; --line2:#43382C;
+  --rust:#F26A33; --green:#8CC97C; --greenbg:#16230F; --greenline:#2E4724;
+  --redbg:#2E1410; --redline:#5C2418; --red:#FF7A63;
+  --amber:#E8C24E; --amberbg:#2B2208; --amberline:#544213;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--paper);color:var(--body);font-family:var(--b);
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:780px;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(1.1rem,4vw,2rem) 5rem;}
+h1{font-family:var(--d);font-weight:800;color:var(--ink);margin:0;
+  font-size:clamp(2.3rem,7vw,3.6rem);line-height:1;text-transform:uppercase;letter-spacing:.01em;}
+.kick{font-family:var(--m);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--rust);margin:0 0 .8rem;}
+.mast{border-bottom:4px solid var(--ink);padding-bottom:1.3rem;margin-bottom:2rem;}
+.mast p{margin:1rem 0 0;font-size:1.1rem;color:var(--muted);max-width:52ch;}
+.step{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:1.5rem 1.6rem;margin-bottom:1.1rem;}
+.step-h{display:flex;align-items:center;gap:.9rem;margin-bottom:.9rem;}
+.step-n{flex-shrink:0;width:46px;height:46px;border-radius:50%;background:var(--rust);
+  color:#fff;font-family:var(--d);font-weight:800;font-size:1.6rem;
+  display:flex;align-items:center;justify-content:center;line-height:1;}
+.step-h h2{font-family:var(--d);font-weight:700;color:var(--ink);margin:0;
+  font-size:clamp(1.35rem,3.6vw,1.8rem);line-height:1.1;text-transform:uppercase;letter-spacing:.01em;}
+.step p{margin:.6rem 0;} .step p:last-child{margin-bottom:0;} .step b{color:var(--ink);}
+.codebox{border:2px solid var(--line2);border-radius:10px;overflow:hidden;margin:1rem 0;background:var(--card);}
+.codebar{display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.6rem .85rem;background:var(--soft);border-bottom:1px solid var(--line);}
+.codebar span{font-family:var(--m);font-size:.72rem;color:var(--muted);letter-spacing:.04em;}
+.copybtn{font-family:var(--b);font-weight:600;font-size:.85rem;border:0;background:var(--rust);
+  color:#fff;padding:.5rem 1.1rem;border-radius:100px;cursor:pointer;transition:filter .13s;}
+.copybtn:hover,.copybtn:focus-visible{filter:brightness(1.12);outline:none;}
+.copybtn.done{background:var(--green);}
+pre{margin:0;padding:1rem;overflow-x:auto;background:var(--codebg);}
+pre code{font-family:var(--m);font-size:.85rem;line-height:1.7;color:var(--ink);white-space:pre;}
+.hl{background:rgba(201,61,5,.16);padding:.1rem .2rem;border-radius:3px;font-weight:600;}
+.note{border-radius:12px;padding:1.15rem 1.3rem;margin-bottom:1rem;border:1px solid;}
+.note h3{font-family:var(--d);font-weight:700;font-size:1.2rem;margin:0 0 .5rem;
+  text-transform:uppercase;letter-spacing:.02em;color:var(--ink);}
+.note p{margin:.5rem 0;} .note p:last-child{margin-bottom:0;}
+.n-red{background:var(--redbg);border-color:var(--redline);}
+.n-amber{background:var(--amberbg);border-color:var(--amberline);}
+.n-green{background:var(--greenbg);border-color:var(--greenline);}
+h2.sec{font-family:var(--d);font-weight:800;color:var(--ink);
+  font-size:clamp(1.5rem,4vw,2.1rem);text-transform:uppercase;letter-spacing:.015em;
+  margin:2.6rem 0 1rem;padding-bottom:.5rem;border-bottom:3px solid var(--ink);}
+.rule{display:flex;gap:.9rem;align-items:flex-start;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:.75rem;}
+.rule .mark{flex-shrink:0;font-size:1.5rem;line-height:1.2;}
+.rule b{color:var(--ink);} .rule p{margin:.3rem 0 0;font-size:.97rem;}
+.tsrow{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:1.1rem 1.25rem;margin-bottom:.75rem;}
+.tsrow .q{font-family:var(--d);font-weight:700;font-size:1.15rem;color:var(--ink);
+  text-transform:uppercase;letter-spacing:.01em;margin:0 0 .4rem;}
+.tsrow p{margin:.3rem 0 0;font-size:.97rem;}
+.foot{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--line);
+  font-family:var(--m);font-size:.74rem;color:var(--faint);}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p style="margin:0 0 1.2rem;font-family:var(--m);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase"><a href="./" style="color:var(--rust);text-decoration:none">&larr; Site Runbook</a></p>
+
+
+<header class="mast">
+  <p class="kick">Travel Wrangell · Website How-To</p>
+  <h1>Adding a Form<br>to the Website</h1>
+  <p>Four steps. You never need to read or understand the code &mdash; just copy, paste, and replace one line.</p>
+</header>
+
+<div class="step">
+  <div class="step-h"><div class="step-n">1</div><h2>Get the code from iDSS</h2></div>
+  <p>Build your form in iDSS as usual. When it's finished, iDSS gives you a block of code to embed.</p>
+  <p><b>Copy all of it.</b> Every line, from top to bottom. Don't worry about what any of it says.</p>
+</div>
+
+<div class="step">
+  <div class="step-h"><div class="step-n">2</div><h2>Add a Code Block in Squarespace</h2></div>
+  <p>Go to the page where the form should live. Click to add a block, and choose <b>Code</b>.</p>
+  <p>Delete anything already inside it so the box is empty.</p>
+</div>
+
+<div class="step">
+  <div class="step-h"><div class="step-n">3</div><h2>Paste this in first</h2></div>
+  <p>Copy the three lines below and paste them into the empty Code Block.</p>
+  <div class="codebox">
+    <div class="codebar"><span>paste this into the Code Block</span><button class="copybtn" data-copy>Copy</button></div>
+<pre><code>&lt;div class="tw-idss cols"&gt;
+PASTE THE IDSS CODE HERE
+&lt;/div&gt;</code></pre>
+  </div>
+  <p>Now <b>highlight the words <span class="hl">PASTE THE IDSS CODE HERE</span></b> and paste the iDSS code over the top of them.</p>
+  <p>That's it. The first and last lines are <b>always exactly the same</b> for every form you ever add. Nothing in them ever changes.</p>
+</div>
+
+<div class="step">
+  <div class="step-h"><div class="step-n">4</div><h2>Save, then check the live page</h2></div>
+  <p>Save the page. Then <b>open the real website</b> &mdash; not the editing view.</p>
+  <p>The form will look blank or broken while you're editing. That's normal and expected. It only appears on the live site.</p>
+</div>
+
+<h2 class="sec">Three Rules</h2>
+
+<div class="rule">
+  <div class="mark">1&#65039;&#8419;</div>
+  <div><b>Only one iDSS form per page.</b>
+  <p>Two forms on the same page will not work &mdash; the second one silently stops working. If you need two forms, put them on two separate pages.</p></div>
+</div>
+
+<div class="rule">
+  <div class="mark">2&#65039;&#8419;</div>
+  <div><b>Changed the form in iDSS? Redo steps 1 and 3.</b>
+  <p>Any time you edit a form in iDSS &mdash; even adding one field &mdash; iDSS gives you brand-new code. The website keeps using the old code until you paste the new one in. <b>Nothing warns you.</b> The form just quietly stops collecting responses.</p></div>
+</div>
+
+<div class="rule">
+  <div class="mark">3&#65039;&#8419;</div>
+  <div><b>Always test on the live site after any change.</b>
+  <p>Fill the form out yourself and hit submit. Then check that it arrived in iDSS. Takes one minute and catches every problem on this page.</p></div>
+</div>
+
+<h2 class="sec">If Something Looks Wrong</h2>
+
+<div class="tsrow">
+  <p class="q">The form isn't there at all</p>
+  <p>You're probably looking at the editing view. Save the page and open the real website in a new tab. If it's still missing, check that the first line <code>&lt;div class="tw-idss cols"&gt;</code> and the last line <code>&lt;/div&gt;</code> are both there.</p>
+</div>
+
+<div class="tsrow">
+  <p class="q">The form works but looks plain or wrong</p>
+  <p>The first or last line is missing or mistyped. Delete everything in the Code Block and redo step 3 from scratch. Don't try to fix it by hand.</p>
+</div>
+
+<div class="tsrow">
+  <p class="q">The form stopped collecting responses</p>
+  <p>Someone edited it in iDSS. Go back to step 1, copy the fresh code, and redo step 3.</p>
+</div>
+
+<div class="tsrow">
+  <p class="q">Fields run past the edge of the box</p>
+  <p>The site-wide styling isn't loaded. That's not something to fix in the Code Block &mdash; send it to Matt.</p>
+</div>
+
+<div class="note n-amber" style="margin-top:1.6rem">
+  <h3>Want the fields side by side?</h3>
+  <p>They already are, where there's room &mdash; and they stack automatically on phones. You don't have to do anything.</p>
+  <p>If you'd rather have <b>one field per row</b>, delete the word <code>cols</code> from the first line, so it reads <code>&lt;div class="tw-idss"&gt;</code>.</p>
+</div>
+
+<div class="note n-green">
+  <h3>The short version</h3>
+  <p><b>Copy from iDSS &rarr; paste the 3 lines &rarr; replace the middle line &rarr; save &rarr; test on the live site.</b></p>
+</div>
+
+<div class="foot">MHM Productions · Travel Wrangell · Questions: matt@mhmproductions.com</div>
+
+</div>
+<script>
+document.querySelectorAll("[data-copy]").forEach(function(b){
+  b.addEventListener("click",function(){
+    var t=b.closest(".codebox").querySelector("code").textContent;
+    function ok(){b.textContent="Copied!";b.classList.add("done");
+      setTimeout(function(){b.textContent="Copy";b.classList.remove("done");},1800);}
+    function fb(){var a=document.createElement("textarea");a.value=t;a.style.position="fixed";
+      a.style.opacity="0";document.body.appendChild(a);a.select();
+      try{document.execCommand("copy");ok();}catch(e){b.textContent="Select it manually";}
+      document.body.removeChild(a);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(ok).catch(fb);
+    }else{fb();}
+  });
+});
+</script>
+</body>
+</html>
